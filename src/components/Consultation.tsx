@@ -79,7 +79,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
   }, [messages]);
 
   const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
-  const GEMINI_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
+  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
 
   const handleSendMessage = async () => {
     if (!inputText.trim()) return;
@@ -97,29 +97,42 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
     setIsTyping(true);
 
     try {
-      const res = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: inputText }] }],
-          }),
-        }
-      );
-      const data = await res.json();
-      const geminiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
-      const response: Message = {
-        id: Date.now().toString(),
-        text: geminiText,
-        sender: activeChat === "chatbot" ? "bot" : "specialist",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => ({
-        ...prev,
-        [activeChat]: [...prev[activeChat], response],
-      }));
+      if (!GEMINI_API_KEY) {
+        const response: Message = {
+          id: Date.now().toString(),
+          text: "AI is not configured yet. Please set VITE_GEMINI_API_KEY to enable smart replies. Here's a general tip: maintain a balanced routine of cleansing, conditioning, and scalp care.",
+          sender: activeChat === "chatbot" ? "bot" : "specialist",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => ({
+          ...prev,
+          [activeChat]: [...prev[activeChat], response],
+        }));
+      } else {
+        const res = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: inputText }] }],
+            }),
+          }
+        );
+        const data = await res.json();
+        const geminiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
+        const response: Message = {
+          id: Date.now().toString(),
+          text: geminiText,
+          sender: activeChat === "chatbot" ? "bot" : "specialist",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => ({
+          ...prev,
+          [activeChat]: [...prev[activeChat], response],
+        }));
+      }
     } catch (err) {
       setMessages((prev) => ({
         ...prev,
