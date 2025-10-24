@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, Users, Award, Zap, Shield, TrendingUp, Heart, Check, Mail, Phone, MapPin, Play, ChevronDown, Menu, X, Moon, Sun, Calendar, BookOpen, MessageCircle, BarChart3, Lock, Sparkles } from 'lucide-react';
 
 interface LandingPageProps { darkMode: boolean; setDarkMode: (mode: boolean) => void }
 const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
+  const navigate = useNavigate();
+  const handleScrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -105,7 +111,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              {['Features', 'Pricing', 'About', 'Team', 'Contact'].map((item) => (
+              {['Features', 'Pricing', 'Team', 'Contact'].map((item) => (
                 <a key={item} href={`#${item.toLowerCase()}`} className={`font-semibold transition-all duration-300 hover:scale-105 ${
                   darkMode ? 'text-gray-300 hover:text-pink-400' : 'text-gray-700 hover:text-pink-600'
                 }`}>
@@ -123,12 +129,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
               >
                 {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
-              <button className={`px-4 md:px-6 py-2 md:py-3 font-semibold rounded-xl transition-all duration-300 ${
+              <button onClick={() => navigate('/login')} className={`px-4 md:px-6 py-2 md:py-3 font-semibold rounded-xl transition-all duration-300 ${
                 darkMode ? 'text-pink-400 hover:bg-gray-800' : 'text-pink-600 hover:bg-pink-50'
               }`}>
                 Sign In
               </button>
-              <button className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl font-semibold hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-lg text-sm md:text-base">
+              <button onClick={() => navigate('/signup')} className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl font-semibold hover:scale-105 hover:shadow-xl transition-all duration-300 shadow-lg text-sm md:text-base">
                 Get Started
               </button>
             </div>
@@ -150,10 +156,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
             darkMode ? 'bg-gray-900/95 border-pink-800/30' : 'bg-white/95 border-pink-100'
           }`}>
             <div className="px-4 py-6 space-y-4">
-              {['Features', 'Pricing', 'About', 'Team', 'Contact'].map((item) => (
-                <a 
-                  key={item} 
-                  href={`#${item.toLowerCase()}`} 
+              {['Features', 'Pricing', 'Team', 'Contact'].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
                   className={`block font-semibold py-3 text-lg ${
                     darkMode ? 'text-gray-300 hover:text-pink-400' : 'text-gray-700 hover:text-pink-600'
                   }`}
@@ -172,12 +178,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
                   {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                   <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
                 </button>
-                <button className={`w-full px-6 py-3 font-semibold rounded-xl transition-all duration-300 ${
+                <button onClick={() => { setMobileMenuOpen(false); navigate('/login'); }} className={`w-full px-6 py-3 font-semibold rounded-xl transition-all duration-300 ${
                   darkMode ? 'text-pink-400 hover:bg-gray-800' : 'text-pink-600 hover:bg-pink-50'
                 }`}>
                   Sign In
                 </button>
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg">
+                <button onClick={() => { setMobileMenuOpen(false); navigate('/signup'); }} className="w-full px-6 py-3 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl font-semibold transition-all duration-300 shadow-lg">
                   Get Started
                 </button>
               </div>
@@ -216,11 +222,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center lg:justify-start">
-                <button className="group px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:scale-105 hover:shadow-pink-200/50 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg">
+                <button onClick={() => navigate('/signup')} className="group px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-pink-500 via-orange-400 to-rose-500 text-white rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:scale-105 hover:shadow-pink-200/50 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg">
                   <span>Start Free Trial</span>
                   <ArrowRight className="h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
                 </button>
-                <button className={`group px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg border-2 ${
+                <button onClick={() => handleScrollTo('features')} className={`group px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-lg md:text-xl hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg border-2 ${
                   darkMode 
                     ? 'bg-gray-800/70 backdrop-blur-xl border-pink-700/50 text-pink-300 hover:bg-gray-700/70' 
                     : 'bg-white/70 backdrop-blur-xl border-pink-200 text-pink-600 hover:bg-white/90'
@@ -628,7 +634,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
                     ))}
                   </ul>
                   
-                  <button className={`w-full py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-lg ${
+                  <button onClick={() => navigate('/signup')} className={`w-full py-3 md:py-4 rounded-xl md:rounded-2xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-lg ${
                     plan.popular 
                       ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white hover:shadow-orange-200/50' 
                       : darkMode
@@ -748,11 +754,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
             Join thousands of professionals who are already benefiting from HairCoaction. Start your free trial today and discover the difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
-            <button className="group px-6 md:px-10 py-3 md:py-5 bg-white text-pink-600 rounded-xl md:rounded-2xl text-lg md:text-xl font-bold hover:scale-105 hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg">
+            <button onClick={() => navigate('/signup')} className="group px-6 md:px-10 py-3 md:py-5 bg-white text-pink-600 rounded-xl md:rounded-2xl text-lg md:text-xl font-bold hover:scale-105 hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg">
               <span>Start Free Trial</span>
               <ArrowRight className="h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="px-6 md:px-10 py-3 md:py-5 border-2 md:border-3 border-white text-white rounded-xl md:rounded-2xl text-lg md:text-xl font-bold hover:bg-white/10 hover:scale-105 transition-all duration-300">
+            <button onClick={() => handleScrollTo('contact')} className="px-6 md:px-10 py-3 md:py-5 border-2 md:border-3 border-white text-white rounded-xl md:rounded-2xl text-lg md:text-xl font-bold hover:bg-white/10 hover:scale-105 transition-all duration-300">
               Schedule Demo
             </button>
           </div>
@@ -890,13 +896,16 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
               <div key={index}>
                 <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6">{section.title}</h3>
                 <ul className="space-y-2 md:space-y-3">
-                  {section.links.map((link) => (
-                    <li key={link}>
-                      <a href="#" className="text-gray-300 hover:text-pink-400 transition-colors duration-300 text-base md:text-lg">
-                        {link}
-                      </a>
-                    </li>
-                  ))}
+                  {section.links.map((link) => {
+                    const href = link === 'Features' ? '#features' : link === 'Pricing' ? '#pricing' : link === 'About' ? '#team' : '#';
+                    return (
+                      <li key={link}>
+                        <a href={href} className="text-gray-300 hover:text-pink-400 transition-colors duration-300 text-base md:text-lg">
+                          {link}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
