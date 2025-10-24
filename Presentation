@@ -1,0 +1,52 @@
+Presentation Script & Slide Content – HairCoaction Internship (Pankaj Kumar)
+
+Slide 1 – Title
+- HairCoaction: Building a Modern Web App with Automated CI/CD
+- Intern: Pankaj Kumar | Duration: 6 Weeks
+
+Slide 2 – Problem & Goals
+- Need: A responsive, production-ready site for HairCoaction
+- Goals: Launch quickly, add auth + feature modules, and automate deploys for continuous iteration
+
+Slide 3 – Tech Stack
+- Frontend: Vite + React + TypeScript + Tailwind CSS
+- Auth: Firebase Authentication (email/password + Google)
+- Routing: react-router-dom
+- DevOps: GitHub Actions (CI) + Netlify (CD)
+
+Slide 4 – Architecture Overview
+- Public Landing Page → Authentication → Dashboard (tabbed sections)
+- Feature modules: Education, Consultation, Events, Community, Profile
+- API stubs (Node/Express) prepared for future backend
+
+Slide 5 – Key Features
+- Responsive UI with rich animations and dark/light theme
+- Authentication flows and protected routes
+- Modular components for rapid iteration
+
+Slide 6 – DevOps Pipeline
+- CI: Lint, Typecheck, Build on every push/PR (.github/workflows/ci.yml)
+- CD: Auto-deploy to Netlify on main (.github/workflows/deploy-netlify.yml)
+- Secrets required: NETLIFY_SITE_ID, NETLIFY_AUTH_TOKEN (GitHub repo → Settings → Secrets)
+
+Slide 7 – Demo Flow
+- Visit Landing Page → Sign Up / Login → Dashboard tabs → Feature previews
+- Emphasis: Fast builds, safe merges, automatic deployments
+
+Slide 8 – Results
+- Shipped a polished MVP with auth and feature scaffolding
+- Reliable CI prevents regressions; CD enables immediate demos
+
+Slide 9 – Lessons Learned
+- Importance of early CI to catch integration issues
+- Consistent theming/state management (moved Landing page darkMode control to App)
+- Planning API stubs eases future backend adoption
+
+Slide 10 – Next Steps
+- Connect database (Supabase) and wire real data
+- Add tests (Vitest, Playwright) and quality gates
+- Observability: Sentry; Security: Semgrep
+
+Slide 11 – Thank You / Q&A
+- Repository structure highlights and how to run locally
+- Contact: pankaj@example.com
