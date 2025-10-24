@@ -6,7 +6,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ darkMode, setDarkMode }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [darkMode, setDarkMode] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
