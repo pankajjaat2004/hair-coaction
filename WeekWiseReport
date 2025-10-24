@@ -66,3 +66,89 @@ Evidence (Repo Paths)
 - API stubs: api/*.ts, api/server.ts
 - CI: .github/workflows/ci.yml
 - CD: .github/workflows/deploy-netlify.yml, netlify.toml
+
+— Detailed Build & Implementation Notes —
+Component Inventory (key files)
+- src/pages/Landingpage.tsx: Marketing landing with hero, stats, features, founders, pricing, testimonials, CTA, contact, footer; darkMode UI.
+- src/pages/DashboardPage.tsx: Switchboard rendering Home, EventPage, Education, Consultation, Community, Profile, Tutorial (prop-driven activeTab).
+- src/components/Sidebar.tsx: Collapsible/Responsive sidebar with navigation and quick actions.
+- src/components/Home.tsx, Education.tsx, Consultation.tsx, EventPage.tsx, Community.tsx, Profile.tsx, Tutorial.tsx: Feature modules.
+- src/components/Login.tsx, Signup.tsx: Auth forms; Google OAuth via signInWithPopup.
+- src/components/BeautifulLoader.tsx, NotFound404.tsx: UX polish.
+- firebase.ts: Firebase app + auth provider configuration.
+
+Routing Map
+- src/App.tsx
+  • / → Landing (redirects to /dashboard if authed)
+  • /login, /signup → public
+  • /dashboard[/(event|education|consultation|community|profile)] → protected (requires auth)
+  • /event, /education, /consultation, /community, /profile → convenience routes
+  • * → NotFound404
+
+State & Theming
+- App-level darkMode persisted in localStorage and applied via body.classList("dark").
+- Landingpage now receives darkMode and setDarkMode as props (central source of truth) to avoid divergent states.
+
+Backend Stubs (Prepared for Expansion)
+- api/server.ts: Express app wiring with CORS/body-parser.
+- Resources:
+  • GET/POST /api/profile → api/profile.ts
+  • GET/POST /api/event → api/event.ts
+  • GET/POST /api/education → api/education.ts
+  • GET/POST /api/consultation → api/consultation.ts
+  • GET/POST /api/community → api/community.ts
+- Next: swap in real DB (prefer Supabase) and auth middleware.
+
+CI/CD Pipeline Details
+- CI (.github/workflows/ci.yml)
+  • Triggers: push (any branch), pull_request
+  • Node 20; npm ci; npm run lint; npm run typecheck; npm run build; upload dist as artifact
+- CD (.github/workflows/deploy-netlify.yml)
+  • Trigger: push to main
+  • Builds with Node 20 and deploys dist using Netlify CLI
+  • Requires repo secrets: NETLIFY_SITE_ID, NETLIFY_AUTH_TOKEN
+- Netlify config (netlify.toml)
+  • command = "npm run build"; publish = "dist"; dev port 5173
+
+Quality & Debugging Actions
+- Added script: "typecheck": "tsc --noEmit" in package.json
+- Fixed Landing page state mismatch; ensured Sidebar.tsx has no merge conflict markers.
+- Confirmed dev server runs via Vite at http://localhost:5173/.
+
+Demo Checklist (for viva/presentation)
+1) Local: npm ci → npm run dev → open http://localhost:5173/
+2) Auth: Sign up/login; verify redirect to dashboard; navigate tabs via Sidebar
+3) Theme: Toggle dark/light on landing; confirm persistence
+4) CI: Commit/push branch → observe CI passing in GitHub Actions
+5) CD: Merge to main → observe Netlify deploy success (with secrets set)
+
+Security & Observability (recommended next)
+- Move Firebase keys to environment variables (Vite env prefixed with VITE_*)
+- Add Sentry for error tracking and performance: DSN via GitHub secret
+- Add Semgrep scan job in CI for security/static analysis
+
+Testing Strategy (planned)
+- Unit tests: Vitest + React Testing Library for components
+- E2E: Playwright for critical flows (auth, navigation, theme)
+- Linting: eslint-config with hooks and react-refresh plugins (already present)
+
+Backlog & Stretch Goals
+- Replace mock API with Supabase tables and Row Level Security; auth sync
+- Role-based access control for admin/creator features
+- Content management via Builder CMS models (marketing updates without code changes)
+- Analytics dashboard with real user metrics
+
+Operations Runbook
+- CI failures: open Actions → view logs for lint/typecheck/build; reproduce locally with npm ci && npm run build
+- Deploy failures: verify NETLIFY_SITE_ID and NETLIFY_AUTH_TOKEN; re-run job; check netlify.toml
+- Hotfix: push fix branch → PR → fast-forward merge to main to trigger redeploy
+
+Attribution & Ownership
+- Primary development: Pankaj Kumar (Frontend + DevOps)
+- Repo artifacts created during internship:
+  • .github/workflows/ci.yml
+  • .github/workflows/deploy-netlify.yml
+  • netlify.toml
+  • WeekWiseReport
+  • Presentation
+  • Landingpage props refactor (src/pages/Landingpage.tsx)
