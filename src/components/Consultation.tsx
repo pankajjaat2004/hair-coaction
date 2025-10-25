@@ -70,6 +70,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
     ],
   });
   const [inputText, setInputText] = useState("");
+  const genId = () => (typeof crypto !== 'undefined' && (crypto as any).randomUUID ? (crypto as any).randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2,8)}`);
   const [isTyping, setIsTyping] = useState(false);
   const [expandedSpecialist, setExpandedSpecialist] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -84,7 +85,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
   const handleSendMessage = async () => {
     if (!inputText.trim()) return;
     const newMessage: Message = {
-      id: Date.now().toString(),
+      id: genId(),
       text: inputText,
       sender: "user",
       timestamp: new Date(),
@@ -99,7 +100,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
     try {
       if (!GEMINI_API_KEY) {
         const response: Message = {
-          id: Date.now().toString(),
+          id: genId(),
           text: "AI is not configured yet. Please set VITE_GEMINI_API_KEY to enable smart replies. Here's a general tip: maintain a balanced routine of cleansing, conditioning, and scalp care.",
           sender: activeChat === "chatbot" ? "bot" : "specialist",
           timestamp: new Date(),
@@ -123,7 +124,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
         const data = await res.json();
         const geminiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
         const response: Message = {
-          id: Date.now().toString(),
+          id: genId(),
           text: geminiText,
           sender: activeChat === "chatbot" ? "bot" : "specialist",
           timestamp: new Date(),
@@ -137,7 +138,7 @@ const Consultation: React.FC<ConsultationProps> = ({ user, activeTab, setActiveT
       setMessages((prev) => ({
         ...prev,
         [activeChat]: [...prev[activeChat], {
-          id: Date.now().toString(),
+          id: genId(),
           text: "Error generating response. Please try again.",
           sender: activeChat === "chatbot" ? "bot" : "specialist",
           timestamp: new Date(),
