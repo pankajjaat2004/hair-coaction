@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
       exclude: ['lucide-react'],
     },
     define: {
-      'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY),
+      'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify(process.env.VITE_GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || ''),
     },
   }
 })
